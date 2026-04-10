@@ -78,6 +78,13 @@ export const whyChooseUs = [
       'End-to-end support from site selection to handover, with full legal transparency and RERA compliance.',
     icon: 'Users',
   },
+  {
+    id: 'reason-6',
+    title: 'Pan-India Expansion',
+    description:
+      'Growing presence across Bangalore, Mysore, and Hyderabad — bringing premium living to India\'s top cities.',
+    icon: 'MapPin',
+  },
 ];
 
 export const stats = [

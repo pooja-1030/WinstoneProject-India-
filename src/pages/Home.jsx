@@ -16,7 +16,7 @@ const iconMap = { Award, MapPin, TrendingUp, Building2, Users };
 
 const founderStats = [
   { value: '6+',    label: 'Years of Excellence', Icon: Award  },
-  { value: '50+',   label: 'Projects Completed',  Icon: Target },
+  { value: '20+',   label: 'Projects Completed',  Icon: Target },
   { value: '2000+', label: 'Lives Impacted',       Icon: Users  },
 ];
 
@@ -45,7 +45,7 @@ export default function Home() {
   const [livePortfolio, setLivePortfolio]       = useState([]);
   const staticProjects     = getFeaturedProjects().slice(0, 3);
   const staticTestimonials = getRandomTestimonials(3);
-  const staticPortfolio    = getFeaturedPortfolio(4);
+  const staticPortfolio    = getFeaturedPortfolio(6);
 
   useEffect(() => {
     projectsService.getAll().then(({ data }) => {
@@ -55,7 +55,7 @@ export default function Home() {
       if (data?.length > 0) setLiveTestimonials(data.slice(0, 3));
     });
     portfolioService.getAll().then(({ data }) => {
-      if (data?.length > 0) setLivePortfolio(data.slice(0, 4));
+      if (data?.length > 0) setLivePortfolio(data.slice(0, 6));
     });
   }, []);
 

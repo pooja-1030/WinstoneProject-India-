@@ -6,7 +6,7 @@ const iconMap = { Award, MapPin, TrendingUp, Building2, Users };
 
 const founderStats = [
   { value: '6+',    label: 'Years of Excellence',  Icon: Award  },
-  { value: '50+',   label: 'Projects Completed',   Icon: Target },
+  { value: '20+',   label: 'Projects Completed',   Icon: Target },
   { value: '2000+', label: 'Lives Impacted',        Icon: Users  },
 ];
 
