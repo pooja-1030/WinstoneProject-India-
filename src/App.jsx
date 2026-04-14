@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -16,12 +17,15 @@ import Services from './pages/Services';
 import Contact from './pages/Contact';
 
 // Admin Pages
-import AdminLogin from './admin/AdminLogin';
-import AdminDashboard from './admin/AdminDashboard';
-import AdminProjects from './admin/AdminProjects';
-import AdminPortfolio from './admin/AdminPortfolio';
+import AdminLogin        from './admin/AdminLogin';
+import AdminDashboard    from './admin/AdminDashboard';
+import AdminProjects     from './admin/AdminProjects';
+import AdminPortfolio    from './admin/AdminPortfolio';
 import AdminTestimonials from './admin/AdminTestimonials';
-import AdminMessages from './admin/AdminMessages';
+import AdminLeads        from './admin/AdminLeads';
+import AdminServices     from './admin/AdminServices';
+import AdminWhyUs        from './admin/AdminWhyUs';
+import AdminSettings     from './admin/AdminSettings';
 
 // Guards
 import ProtectedRoute from './components/ProtectedRoute';
@@ -40,11 +44,11 @@ function AppRoutes() {
         {/* ── Public Routes ── */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="projects" element={<Projects />} />
+          <Route path="about"     element={<About />} />
+          <Route path="projects"  element={<Projects />} />
           <Route path="portfolio" element={<Portfolio />} />
-          <Route path="services" element={<Services />} />
-          <Route path="contact" element={<Contact />} />
+          <Route path="services"  element={<Services />} />
+          <Route path="contact"   element={<Contact />} />
         </Route>
 
         {/* ── Admin Login ── */}
@@ -60,11 +64,17 @@ function AppRoutes() {
           }
         >
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="projects" element={<AdminProjects />} />
-          <Route path="portfolio" element={<AdminPortfolio />} />
+          <Route path="dashboard"    element={<AdminDashboard />} />
+          <Route path="projects"     element={<AdminProjects />} />
+          <Route path="portfolio"    element={<AdminPortfolio />} />
           <Route path="testimonials" element={<AdminTestimonials />} />
-          <Route path="messages" element={<AdminMessages />} />
+          <Route path="leads"        element={<AdminLeads />} />
+          <Route path="services"     element={<AdminServices />} />
+          <Route path="why-us"       element={<AdminWhyUs />} />
+          <Route path="settings"     element={<AdminSettings />} />
+
+          {/* Legacy redirect: /admin/messages → /admin/leads */}
+          <Route path="messages" element={<Navigate to="/admin/leads" replace />} />
         </Route>
 
         {/* Catch-all */}
@@ -78,7 +88,9 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppRoutes />
+        <ThemeProvider>
+          <AppRoutes />
+        </ThemeProvider>
       </AuthProvider>
     </Router>
   );
