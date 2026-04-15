@@ -5,12 +5,11 @@ import Hero from '../components/Hero';
 import FadeUp from '../components/ui/FadeUp';
 import BlurText from '../components/ui/BlurText';
 import CountUp from '../components/ui/CountUp';
-import { ArrowRight, Award, MapPin, TrendingUp, Building2, Users, Quote, Target } from 'lucide-react';
+import { ArrowRight, Award, MapPin, TrendingUp, Building2, Users, Target } from 'lucide-react';
 import { companyInfo, founderInfo, whyChooseUs } from '../data/constants';
 import { getFeaturedProjects } from '../data/projects';
 import { getFeaturedPortfolio } from '../data/portfolio';
-import { getRandomTestimonials } from '../data/testimonials';
-import { projectsService, testimonialsService, portfolioService } from '../services/supabase';
+import { projectsService, portfolioService } from '../services/supabase';
 
 const iconMap = { Award, MapPin, TrendingUp, Building2, Users };
 
@@ -40,28 +39,22 @@ const services = [
 const ease = [0.22, 1, 0.36, 1];
 
 export default function Home() {
-  const [liveProjects, setLiveProjects]         = useState([]);
-  const [liveTestimonials, setLiveTestimonials] = useState([]);
-  const [livePortfolio, setLivePortfolio]       = useState([]);
-  const staticProjects     = getFeaturedProjects().slice(0, 3);
-  const staticTestimonials = getRandomTestimonials(3);
-  const staticPortfolio    = getFeaturedPortfolio(6);
+  const [liveProjects, setLiveProjects] = useState([]);
+  const [livePortfolio, setLivePortfolio] = useState([]);
+  const staticProjects  = getFeaturedProjects().slice(0, 3);
+  const staticPortfolio = getFeaturedPortfolio(6);
 
   useEffect(() => {
     projectsService.getAll().then(({ data }) => {
       if (data?.length > 0) setLiveProjects(data.slice(0, 3));
-    });
-    testimonialsService.getAll().then(({ data }) => {
-      if (data?.length > 0) setLiveTestimonials(data.slice(0, 3));
     });
     portfolioService.getAll().then(({ data }) => {
       if (data?.length > 0) setLivePortfolio(data.slice(0, 6));
     });
   }, []);
 
-  const displayProjects     = liveProjects.length     > 0 ? liveProjects     : staticProjects;
-  const displayTestimonials = liveTestimonials.length > 0 ? liveTestimonials : staticTestimonials;
-  const displayPortfolio    = livePortfolio.length    > 0 ? livePortfolio    : staticPortfolio;
+  const displayProjects  = liveProjects.length  > 0 ? liveProjects  : staticProjects;
+  const displayPortfolio = livePortfolio.length > 0 ? livePortfolio : staticPortfolio;
 
   return (
     <>
@@ -335,43 +328,6 @@ export default function Home() {
                 </div>
               </div>
             </FadeUp>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Testimonials ── */}
-      <section className="section section-black">
-        <div className="container">
-          <FadeUp>
-            <div className="section-header">
-              <span className="section-subtitle">Client Stories</span>
-              <h2 className="section-title">
-                <BlurText text="What Our Clients Say" delay={0.1} />
-              </h2>
-              <div className="gold-divider" style={{ margin: '16px auto' }} />
-            </div>
-          </FadeUp>
-          <div className="testimonials-grid">
-            {displayTestimonials.map((t, i) => (
-              <FadeUp key={t.id} delay={i * 0.12}>
-                <motion.div
-                  className="testi-card"
-                  whileHover={{ y: -6, boxShadow: '0 20px 60px rgba(0,0,0,0.5)', transition: { duration: 0.3 } }}
-                >
-                  <Quote size={28} className="testi-card__quote" />
-                  <p className="testi-card__message">{t.message || t.testimonial}</p>
-                  <div className="testi-card__author">
-                    <div className="testi-card__avatar">
-                      {(t.name || '?')[0].toUpperCase()}
-                    </div>
-                    <div>
-                      <span className="testi-card__name">{t.name}</span>
-                      <span className="testi-card__loc">{t.location || t.country}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              </FadeUp>
-            ))}
           </div>
         </div>
       </section>
