@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Plus, Pencil, Trash2, X, Check, MapPin,
   Search, Image as ImageIcon, AlertCircle, CheckCircle2,
@@ -7,7 +7,7 @@ import {
 import { supabase } from '../services/supabase';
 
 /* ─── helpers ─────────────────────────────────────────────── */
-const EMPTY = { title: '', description: '', location: '', image: '' };
+const EMPTY = { title: '', description: '', location: '', image_url: '' };
 
 function fmt(dateStr) {
   if (!dateStr) return '—';
@@ -108,7 +108,7 @@ function ConfirmDialog({ project, onConfirm, onCancel }) {
 function ProjectModal({ editItem, onClose, onSaved }) {
   const [form, setForm] = useState(
     editItem
-      ? { title: editItem.title, description: editItem.description, location: editItem.location, image: editItem.image || '' }
+      ? { title: editItem.title, description: editItem.description, location: editItem.location, image_url: editItem.image_url || '' }
       : EMPTY
   );
   const [saving, setSaving] = useState(false);
@@ -118,7 +118,7 @@ function ProjectModal({ editItem, onClose, onSaved }) {
 
   const set = (key) => (e) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));
-    if (key === 'image') setImgError(false);
+    if (key === 'image_url') setImgError(false);
   };
 
   const handleSave = async () => {
@@ -133,7 +133,7 @@ function ProjectModal({ editItem, onClose, onSaved }) {
       title:       form.title.trim(),
       description: form.description.trim(),
       location:    form.location.trim(),
-      image:       form.image.trim() || null,
+      image_url:   form.image_url.trim() || null,
     };
 
     let res;
@@ -248,9 +248,9 @@ function ProjectModal({ editItem, onClose, onSaved }) {
             </label>
             <input
               type="text"
-              value={form.image}
-              onChange={set('image')}
-              placeholder="e.g. /hero_villa.png"
+              value={form.image_url}
+              onChange={set('image_url')}
+              placeholder="e.g. /hero_villa.png or https://..."
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.1)',
@@ -260,7 +260,7 @@ function ProjectModal({ editItem, onClose, onSaved }) {
               onFocus={(e) => (e.target.style.borderColor = 'var(--color-gold)')}
               onBlur={(e)  => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
             />
-            {form.image && (
+            {form.image_url && (
               <div style={{ marginTop: '8px', borderRadius: '8px', overflow: 'hidden', height: '140px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 {imgError ? (
                   <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: 'rgba(255,255,255,0.25)', fontSize: '0.82rem' }}>
@@ -268,7 +268,7 @@ function ProjectModal({ editItem, onClose, onSaved }) {
                   </div>
                 ) : (
                   <img
-                    src={form.image}
+                    src={form.image_url}
                     alt="preview"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     onError={() => setImgError(true)}
@@ -335,7 +335,6 @@ export default function AdminProjects() {
   const [showModal, setShowModal]   = useState(false);
   const [editItem, setEditItem]     = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
-  const [deleting, setDeleting]     = useState(false);
   const [toast, setToast]           = useState(null);
 
   /* fetch */
@@ -375,9 +374,7 @@ export default function AdminProjects() {
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
-    setDeleting(true);
     const { error } = await supabase.from('projects').delete().eq('id', deleteTarget.id);
-    setDeleting(false);
     setDeleteTarget(null);
     if (error) {
       showToast('Failed to delete project.', 'error');
@@ -499,9 +496,9 @@ export default function AdminProjects() {
                     {/* Image */}
                     <td style={{ padding: '14px 18px' }}>
                       <div style={{ width: '64px', height: '48px', borderRadius: '6px', overflow: 'hidden', background: 'rgba(255,255,255,0.05)', flexShrink: 0 }}>
-                        {p.image ? (
+                        {p.image_url ? (
                           <img
-                            src={p.image}
+                            src={p.image_url}
                             alt={p.title}
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             onError={(e) => {
