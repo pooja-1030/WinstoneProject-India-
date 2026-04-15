@@ -5,7 +5,7 @@ import Hero from '../components/Hero';
 import FadeUp from '../components/ui/FadeUp';
 import BlurText from '../components/ui/BlurText';
 import CountUp from '../components/ui/CountUp';
-import { ArrowRight, Award, MapPin, TrendingUp, Building2, Users, Target } from 'lucide-react';
+import { ArrowRight, Award, MapPin, TrendingUp, Building2, Users, Target, Quote } from 'lucide-react';
 import { companyInfo, founderInfo, whyChooseUs } from '../data/constants';
 import { getFeaturedProjects } from '../data/projects';
 import { getFeaturedPortfolio } from '../data/portfolio';
